@@ -1,0 +1,57 @@
+import numpy as np
+import pandas as pd
+from mypulp import *
+import streamlit as st
+
+st.set_page_config(
+    page_title="SaizeApp ",
+    #page_icon="🧊",
+    layout="wide",
+    initial_sidebar_state="expanded",
+)
+
+st.title('SaizeriyaOptimization')
+
+money = st.sidebar.slider("予算", 500, 10000, 1000, 500)
+calorie_limit = st.sidebar.slider("摂取限界カロリー", 300, 2000, 500, 100)
+
+if st.checkbox("計算"):
+
+    df= pd.read_csv("saize_mene.csv", index_col=0)
+    #df.head()
+    N = len(df)+1
+    menu_index = [i for i in range(1,N)]
+    #print(menu_index)
+    menu, P, C, S= {},{},{},{}
+    for i in menu_index:
+        menu[i] = df["name"][i]
+        P[i] = df["price"][i]
+        C[i] = df["calorie"][i]
+        S[i] = df["salt"][i]
+
+    model = Model() # モデルの定義
+
+    x = {}
+    for i in menu_index:
+        #x[i] = model.addVar(vtype='B', name=f'x({i})')
+        x[i] = model.addVar(vtype='B', name=str(i))
+    model.update()
+
+    for i in menu_index:
+        model.addConstr(quicksum(P[i]*x[i] for i in menu_index) <= money)
+        model.addConstr(quicksum(C[i]*x[i] for i in menu_index) <= calorie_limit)
+    model.setObjective(quicksum(C[i]*x[i] for i in menu_index), GRB.MAXIMIZE)
+
+    model.optimize()
+    print('Optimal solution:', model.ObjVal)
+    print("======================================")
+    sum_calorie,sum_price=0,0
+    for v in model.getVars():
+        if v.X> 0:
+            st.write(menu[int(v.VarName)],P[int(v.VarName)],"円")
+            sum_calorie+=int(C[int(v.VarName)])
+            sum_price+=int(P[int(v.VarName)])
+    st.write("=======================================")
+    st.write("計",sum_calorie,"キロカロリー")
+    st.write("合計金額",sum_price, "円")
+    
