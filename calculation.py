@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 from mypulp import *
 import streamlit as st
+from importlib.resources import *
 
 st.set_page_config(
     page_title="SaizeApp ",
