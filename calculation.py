@@ -13,8 +13,8 @@ st.set_page_config(
 
 st.title('SaizeriyaOptimization')
 
-money = st.sidebar.slider("予算", 500, 10000, 1000, 500)
-calorie_limit = st.sidebar.slider("摂取限界カロリー", 300, 2000, 500, 100)
+money = st.sidebar.slider("予算", 300, 5000, 1000, 100)
+calorie_limit = st.sidebar.slider("摂取限界カロリー", 300, 3000, 1000, 100)
 
 if st.checkbox("計算"):
 
