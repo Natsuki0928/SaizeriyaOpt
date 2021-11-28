@@ -16,7 +16,7 @@ st.title('SaizeriyaOptimization')
 money = st.sidebar.slider("予算", 300, 5000, 1000, 100)
 calorie_limit = st.sidebar.slider("摂取カロリー上限", 300, 3000, 1000, 100)
 
-df= pd.read_csv("saize_mene.csv", index_col=0)
+df= pd.read_csv("saize_menu.csv", index_col=0)
 #df.head()
 N = len(df)+1
 menu_index = [i for i in range(1,N)]
