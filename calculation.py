@@ -15,8 +15,8 @@ st.set_page_config(
 st.title('SaizeriyaOptimization')
 
 option = st.selectbox(
-    '使いたい機能を選んでください',
-     ('1000円ガチャ', 'カロリー最適化',))
+    '使いたいアプリを選んでください',
+     ('1000円ガチャアプリ', 'カロリー最適化アプリ',))
 st.write('You selected:', option)
 df= pd.read_csv("saize_menu.csv", index_col=0)
     #df.head()
